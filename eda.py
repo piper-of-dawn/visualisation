@@ -45,7 +45,7 @@ def plot_kde_with_shapiro(arrays, title=None, x_label=None, y_label=None, figsiz
         title=title,
         xaxis_title=x_label,
         yaxis_title=y_label,
-        font=dict(family="SF Mono, monospace", color='black'),
+        font=dict(family="Roboto Mono, SF Mono, monospace", color='black'),
         xaxis=dict(
             showline=False,
             showgrid=True,
@@ -66,14 +66,7 @@ def plot_kde_with_shapiro(arrays, title=None, x_label=None, y_label=None, figsiz
         width=figsize[0],
         height=figsize[1]
     )
-    
-    # Update the gridlines to be dashed
-    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgrey', griddash='dash')
-    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgrey', griddash='dash')
-    
-  
-    # Show the plot
-    fig.show()
+
 
 
 
@@ -93,10 +86,10 @@ def plot_multiple_lines(x, y_arrays, title=None, x_label=None, y_label=None, fig
     
     # Update the layout to remove spines, add dashed gridlines, and use neutral colors
     fig.update_layout(
-        title=title,
+        title=title.upper(),
         xaxis_title=x_label,
         yaxis_title=y_label,
-        font=dict(family="Courier New, monospace", color='black'),
+        font=dict(family="Roboto Mono, Courier New, monospace", color='black'),
         xaxis=dict(
             showline=False,
             showgrid=True,
