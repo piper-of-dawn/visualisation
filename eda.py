@@ -69,3 +69,51 @@ def plot_with_regression(x, y, slope, intercept, title=None, x_label=None, y_lab
     fig.show()
 
 
+def plot_multiple_lines(x, y_arrays, title=None, x_label=None, y_label=None, figsize=(800, 600)):
+    # Create the line plot
+    fig = go.Figure()
+    
+    # Add each y array as a line in the plot
+    for i, y in enumerate(y_arrays):
+        fig.add_trace(go.Scatter(
+            x=x, y=y,
+            mode='lines',
+            name=f'Line {i+1}',
+            line=dict(color='grey', width=2)
+        ))
+    
+    # Update the layout to remove spines, add dashed gridlines, and use neutral colors
+    fig.update_layout(
+        title=title,
+        xaxis_title=x_label,
+        yaxis_title=y_label,
+        font=dict(family="Courier New, monospace", color='black'),
+        xaxis=dict(
+            showline=False,
+            showgrid=True,
+            gridcolor='lightgrey',
+            gridwidth=1,
+            zeroline=False,
+            showticklabels=True
+        ),
+        yaxis=dict(
+            showline=False,
+            showgrid=True,
+            gridcolor='lightgrey',
+            gridwidth=1,
+            zeroline=False,
+            showticklabels=True
+        ),
+        plot_bgcolor='white',
+        width=figsize[0],
+        height=figsize[1]
+    )
+    
+    # Update the gridlines to be dashed
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgrey', griddash='dash')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgrey', griddash='dash')
+    
+    # Convert to raster format and show the plot
+    fig.show()
+
+
