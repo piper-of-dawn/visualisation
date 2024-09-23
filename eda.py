@@ -139,5 +139,85 @@ def plot_multiple_lines(x, y_arrays, title=None, x_label=None, y_label=None, fig
     # Convert to raster format and show the plot
     fig.show()
 
+import numpy as np
+import plotly.graph_objs as go
+
+def plot_lorenz_curve(data, title="Lorenz Curve", x_label="Cumulative Share of Population", y_label="Cumulative Share of Wealth/Income", figsize=(800, 600)):
+    # Sort the data and calculate cumulative values
+    sorted_data = np.sort(data)
+    cum_data = np.cumsum(sorted_data) / np.sum(sorted_data)
+    
+    # X-axis: cumulative population percentage (from 0 to 1)
+    cum_population = np.linspace(0, 1, len(sorted_data))
+    
+    # Create the line plot for Lorenz curve
+    fig = go.Figure()
+
+    # Add Lorenz curve line
+    fig.add_trace(go.Scatter(
+        x=cum_population, y=cum_data,
+        mode='lines',
+        name='Lorenz Curve',
+        line=dict(color='blue', width=2)
+    ))
+    
+    # Add the equality line (45-degree line)
+    fig.add_trace(go.Scatter(
+        x=cum_population, y=cum_population,
+        mode='lines',
+        name='Line of Equality',
+        line=dict(color='black', width=2, dash='dash')
+    ))
+
+    # Shade the area between the Lorenz curve and the line of equality
+    fig.add_trace(go.Scatter(
+        x=np.concatenate([cum_population, cum_population[::-1]]),
+        y=np.concatenate([cum_data, cum_population[::-1]]),
+        fill='toself',
+        fillcolor='rgba(0, 100, 80, 0.2)',  # Semi-transparent green color
+        line=dict(color='rgba(255,255,255,0)'),
+        hoverinfo="skip",
+        showlegend=False
+    ))
+
+    # Update layout for aesthetic purposes
+    fig.update_layout(
+        title=title.upper(),
+        xaxis_title=x_label,
+        yaxis_title=y_label,
+        font=dict(family="Roboto Mono, Courier New, monospace", color='black'),
+        xaxis=dict(
+            showline=False,
+            showgrid=True,
+            gridcolor='lightgrey',
+            gridwidth=1,
+            zeroline=False,
+            showticklabels=True
+        ),
+        yaxis=dict(
+            showline=False,
+            showgrid=True,
+            gridcolor='lightgrey',
+            gridwidth=1,
+            zeroline=False,
+            showticklabels=True
+        ),
+        plot_bgcolor='white',
+        width=figsize[0],
+        height=figsize[1]
+    )
+
+    # Update gridlines to be dashed
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='lightgrey', griddash='dash')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='lightgrey', griddash='dash')
+
+    # Show the plot
+    fig.show()
+
+# Example usage with fake data
+fake_income_data = np.random.exponential(scale=1000, size=100)
+plot_lorenz_curve(fake_income_data)
+
+
 
 
