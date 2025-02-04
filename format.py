@@ -34,47 +34,57 @@ def add_hlines (ax, x_ticks, y_ticks, color):
     ax.hlines(y=y_ticks , xmax=x_ticks.max(), xmin=x_ticks.min(), linewidth=0.75, linestyles='dashed',color="#182e3f", zorder=-1, alpha=0.4)
     return ax
 
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
 def format_chart(func, *args, **kwargs):
     def wrapper(*args, **kwargs):
-        # Retrieve x, y, and color from kwargs
+        # Retrieve parameters
         x = kwargs.get('x')
         y = kwargs.get('y')
-        color = kwargs.get('color', 'blue')  # Default color if not passed
+        color = kwargs.get('color', 'brown')  # Default to a sepia-friendly color
         de_spine = kwargs.get('despine', True)
         title = kwargs.get('title', "Untitled")
         xlabel = kwargs.get('xlabel', 'xLabel')
-        ylabel = kwargs.get('xlabel', 'yLabel')
+        ylabel = kwargs.get('ylabel', 'yLabel')  # Fixed 'xlabel' to 'ylabel'
         vertical_grid = kwargs.get('vertical_grid', False)
         horizontal_grid = kwargs.get('horizontal_grid', False)
         ticks_transform = kwargs.get('ticks_transform', None)
         footnote = kwargs.get('footnote', False)
+
         # Call the original function
         ax = func(*args, **kwargs)
-        
+
+        # Apply sepia tone background
+        sepia_bg = (0.99, 0.85, 0.68)  # Light sepia tone
+        ax.set_facecolor(sepia_bg)
+        ax.figure.set_facecolor(sepia_bg)
+
         # Apply the desired formatting functions
         if de_spine:
             ax = despine(ax)
-        ax = set_title(ax, title)
-        ax = set_axis_labels(ax, f"{xlabel}", f"{ylabel}")
-        
-        # Customise x ticks and add vertical lines
+        ax = set_title(ax, title, color='brown')  # Title in brown
+        ax = set_axis_labels(ax, xlabel, ylabel, color='brown')  # Labels in brown
+
+        # Customize x ticks and add grid lines
         x_ticks = ax.get_xticks()
         y_ticks = ax.get_yticks()
         if ticks_transform is not None:
-            print("Transforming x ticks")
-            ax = customise_x_ticks(ax, ticks_transform(x_ticks))
+            ax = customise_x_ticks(ax, ticks_transform(x_ticks), color='brown')
         if vertical_grid:
             ax = add_vlines(ax, x_ticks, y_ticks, color)
         if horizontal_grid:
             ax = add_hlines(ax, x_ticks, y_ticks, color)
-            
+
+        # Apply sepia tick labels
+        ax.tick_params(colors='brown')
+
+        # Add footnote in sepia style
         if footnote:
-            plt.tight_layout(rect=[0, 0.05, 1, 1])  # Adjust the bottom margin to leave space for the footnote
-            font= fm.FontProperties(fname='font/GeistMono.ttf')
-            ax.text(0.0, -0.15, footnote, transform=ax.transAxes, ha='left', fontsize=8, color='gray', fontproperties=font)
-          
+            plt.tight_layout(rect=[0, 0.05, 1, 1])  # Adjust bottom margin
+            font = fm.FontProperties(fname='font/GeistMono.ttf')
+            ax.text(0.0, -0.15, footnote, transform=ax.transAxes, ha='left',
+                    fontsize=8, color='brown', fontproperties=font)
 
         return ax
     return wrapper
-
-        
