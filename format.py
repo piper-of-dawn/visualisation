@@ -18,7 +18,7 @@ def set_axis_labels (ax, x_label, y_label):
 
 
 def set_title (ax, title):
-    font_title= fm.FontProperties(fname='font/GeistMonoLight.ttf', size=24, weight=600)
+    font_title= fm.FontProperties(fname='font/GeistMonoLight.ttf', size=18)
     ax.set_title(title, fontsize=20,fontproperties=font_title, loc='left')
     return ax
 
@@ -47,7 +47,7 @@ def format_chart(func, *args, **kwargs):
         vertical_grid = kwargs.get('vertical_grid', False)
         horizontal_grid = kwargs.get('horizontal_grid', False)
         ticks_transform = kwargs.get('ticks_transform', None)
-        footnote = kwargs.get('footnote', None)
+        footnote = kwargs.get('footnote', False)
         # Call the original function
         ax = func(*args, **kwargs)
         

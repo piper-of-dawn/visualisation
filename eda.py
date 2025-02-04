@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 import numpy as np
-from utils import hex_to_rgba
+from visualisation.utils import hex_to_rgba
 from pypalettes import load_cmap
 cmap =  load_cmap("Blue2Gray8Steps").colors
 
